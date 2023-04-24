@@ -175,7 +175,8 @@ export default function Users() {
                 <Form.Control
                   value={userName}
                   type="text"
-                  autoFocus
+                                  autoFocus
+                                  disabled
                   required
                 />
               </Form.Group>
