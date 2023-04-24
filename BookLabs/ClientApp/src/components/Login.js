@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import useAuth from '../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from "axios";
+import axios from '../api/axios';
 import { Col, Button, Row, Container, Card, Form } from 'react-bootstrap';
 
 const Login = () => {
@@ -28,7 +28,7 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const url = "http://localhost:5049/api/Users/login";
+            const url = "/Users/login";
             const response = await axios.post(url, {
                 UserName: user,
                 Password: pwd

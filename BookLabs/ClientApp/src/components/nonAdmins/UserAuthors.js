@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../api/axios';
 import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap'; import DataTable from 'react-data-table-component';
 import UserNavigation from './UserNavigation';
@@ -9,7 +9,7 @@ export default function UserAuthors() {
         (async () => await Load())();
     }, []);
     async function Load() {
-        const result = await axios.get("http://localhost:5049/api/Authors");
+        const result = await axios.get("/Authors");
         setAuthors(result.data);
     }
 

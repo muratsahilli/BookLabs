@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../api/axios';
 import React, { useEffect, useState } from 'react';
 import { Form, Button, Modal, Container } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
@@ -24,7 +24,7 @@ export default function Users() {
     (async () => await Load())();
   }, []);
   async function Load() {
-    const result = await axios.get("http://localhost:5049/api/Users");
+    const result = await axios.get("/Users");
     setUserList(result.data);
   }
   async function editUser(user) {
@@ -36,7 +36,7 @@ export default function Users() {
   }
   async function updateUser() {
     try {
-      await axios.put("http://localhost:5049/api/Users/" + userId, {
+      await axios.put("/Users/" + userId, {
         userId: userId,
         userName: userName,
         fullName: fullName,
@@ -50,7 +50,7 @@ export default function Users() {
   }
   async function changeRole(id) {
     try {
-      await axios.put("http://localhost:5049/api/Users/role/" + id);
+      await axios.put("/Users/role/" + id);
       alert("Role Changed");
       Load();
     }
@@ -58,7 +58,7 @@ export default function Users() {
   }
   async function deleteUser(id) {
     try {
-      await axios.delete("http://localhost:5049/api/Users/" + id);
+      await axios.delete("/Users/" + id);
       alert("User deleted");
       Load();
     } catch (error) {

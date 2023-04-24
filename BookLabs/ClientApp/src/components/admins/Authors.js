@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../api/axios';
 import React, { useEffect, useState } from 'react';
 import {  Form, Button,Modal, Container } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
@@ -21,12 +21,12 @@ export default function Authors() {
     (async () => await Load())();
   }, []);
   async function Load() {
-    const result = await axios.get("http://localhost:5049/api/Authors");
+    const result = await axios.get("/Authors");
     setAuthors(result.data);
   }
   async function Add() {
 
-    await axios.post("http://localhost:5049/api/Authors", {
+    await axios.post("/Authors", {
       authorName: authorName,
       birthDate: birthDate
     }).then((result) => {
@@ -48,7 +48,7 @@ export default function Authors() {
 
   async function deleteAuthor(id) {
 
-    await axios.delete("http://localhost:5049/api/Authors/" + id);
+    await axios.delete("/Authors/" + id);
     alert("Author deleted Successfully");
     setName("");
     setDate("");
@@ -58,7 +58,7 @@ export default function Authors() {
   async function updateAuthor() {
 
     try {
-      await axios.put("http://localhost:5049/api/Authors/" + id,
+      await axios.put("/Authors/" + id,
         {
           authorId: id,
           authorName: authorName,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
-import axios from 'axios';
+import axios from '../../api/axios';
 import UserNavigation from './UserNavigation';
 
 const UserBooks = () => {
@@ -10,7 +10,7 @@ const UserBooks = () => {
     (async () => await Load())();
   }, []);
   async function Load() {
-    const result = await axios.get("http://localhost:5049/api/Books");
+    const result = await axios.get("/Books");
     setBooks(result.data);
   }
   const columns = [

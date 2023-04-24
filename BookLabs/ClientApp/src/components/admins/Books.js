@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {  Form, Modal, Button, Dropdown, Container } from 'react-bootstrap';
-import axios from 'axios';
+import axios from '../../api/axios';
 import DataTable from 'react-data-table-component';
 import Select from 'react-select';
 import Navigation from './Navigation';
@@ -30,7 +30,7 @@ export default function Books() {
     (async () => await Load())();
   });
   async function Load() {
-    const result = await axios.get("http://localhost:5049/api/Books");
+    const result = await axios.get("/Books");
     setBooks(result.data);
     getAuthors();    
   }
@@ -45,7 +45,7 @@ export default function Books() {
     } else query = "";
     query = query.slice(0, -1)
     try {
-      await axios.post("http://localhost:5049/api/Books?" + query, {
+      await axios.post("/Books?" + query, {
       Title: title,
       totalPages: pages,
       publishedDate: publishedDate
@@ -69,7 +69,7 @@ export default function Books() {
       });
     } else query = "";
     try {
-      await axios.put("http://localhost:5049/api/Books/" + id + "?" + query, {
+      await axios.put("/Books/" + id + "?" + query, {
       bookId: id,
       Title: title,
       totalPages: pages,
@@ -86,7 +86,7 @@ export default function Books() {
   }
 
   async function deleteBook(id) {
-    await axios.delete("http://localhost:5049/api/Books/" + id);
+    await axios.delete("/Books/" + id);
     alert("Book deleted Successfully");
     setId("");
     setTitle("");
@@ -97,7 +97,7 @@ export default function Books() {
   }  
 
   async function getAuthors() {
-    await axios.get("http://localhost:5049/api/Authors/")
+    await axios.get("/Authors/")
       .then(response => {
                 
         const authorList = response.data.map(author => ({ value: author.authorId, label: author.authorName }));
