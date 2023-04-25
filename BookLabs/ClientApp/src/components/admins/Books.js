@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {  Form, Modal, Button, Dropdown, Container } from 'react-bootstrap';
+import { Form, Modal, Button, Dropdown, Container } from 'react-bootstrap';
 import axios from '../../api/axios';
 import DataTable from 'react-data-table-component';
 import Select from 'react-select';
@@ -10,7 +10,7 @@ export default function Books() {
   const [title, setTitle] = useState("");
   const [pages, setPages] = useState("");
   const [publishedDate, setDate] = useState("");
-  
+
 
   const [books, setBooks] = useState([]);
   const [optionList, setOptionList] = useState([])
@@ -24,21 +24,21 @@ export default function Books() {
   const handleCloseEdit = () => { setShowEdit(false); setSelectedOptions() };
   const handleShowEdit = () => setShowEdit(true);
 
-  
+
 
   useEffect(() => {
     (async () => await Load())();
-  });
+  }, []);
   async function Load() {
     const result = await axios.get("/Books");
     setBooks(result.data);
-    getAuthors();    
+    getAuthors();
   }
 
   async function Add() {
     var query = "";
-    
-    if (selectedOptions.length !== 0) {      
+
+    if (selectedOptions.length !== 0) {
       selectedOptions.forEach(element => {
         query = query + "mylist=" + element.value + "&"
       });
@@ -46,20 +46,20 @@ export default function Books() {
     query = query.slice(0, -1)
     try {
       await axios.post("/Books?" + query, {
-      Title: title,
-      totalPages: pages,
-      publishedDate: publishedDate
+        Title: title,
+        totalPages: pages,
+        publishedDate: publishedDate
 
-    });
-    setShow(false);
-      
-    Load();
-    alert("success");
+      });
+      setShow(false);
+
+      Load();
+      alert("success");
     } catch (error) {
       alert("error")
     }
   }
-  
+
   async function updateBook() {
     var query = "";
     if (selectedOptions.length !== 0) {
@@ -70,16 +70,16 @@ export default function Books() {
     } else query = "";
     try {
       await axios.put("/Books/" + id + "?" + query, {
-      bookId: id,
-      Title: title,
-      totalPages: pages,
-      publishedDate: publishedDate
+        bookId: id,
+        Title: title,
+        totalPages: pages,
+        publishedDate: publishedDate
 
-    });
-    setShow(false);
-      
-    Load();
-    alert("success")
+      });
+      handleCloseEdit();
+
+      Load();
+      alert("success")
     } catch (error) {
       alert("error")
     }
@@ -94,16 +94,16 @@ export default function Books() {
     setDate("");
 
     Load();
-  }  
+  }
 
   async function getAuthors() {
     await axios.get("/Authors/")
       .then(response => {
-                
+
         const authorList = response.data.map(author => ({ value: author.authorId, label: author.authorName }));
-        
-        setOptionList(authorList)       
-        
+
+        setOptionList(authorList)
+
       });
   }
   function getBook(book) {
@@ -152,7 +152,7 @@ export default function Books() {
           <button className="btn btn-warning me-1" onClick={() => getBook(row)}>
             Edit
           </button>
-          <button className="btn btn-danger" onClick={() => deleteBook(row.authorId)}>
+          <button className="btn btn-danger" onClick={() => deleteBook(row.bookId)}>
             Delete
           </button>
         </div>
@@ -192,59 +192,61 @@ export default function Books() {
   );
 
   return (
-    <div style={{ minHeight: '100vh', paddingBottom: '60px'}}>
-      <Navigation/>
+    <div style={{ minHeight: '100vh', paddingBottom: '60px' }}>
+      <Navigation />
       <Container>
-      <br></br><br></br>
-      <DataTable
+        <br></br><br></br>
+        <DataTable
           title={customHeader}
-            columns={columns}
-            data={books}
-            keyField="bookId"
-            pagination={true}
-            paginationPerPage={10}
-            paginationRowsPerPageOptions={[5, 10, 20, 50]}
-            customStyles={customStyles}
-          />
+          columns={columns}
+          data={books}
+          keyField="bookId"
+          pagination={true}
+          paginationPerPage={10}
+          paginationRowsPerPageOptions={[5, 10, 20, 50]}
+          customStyles={customStyles}
+        />
         <Modal show={show} onHide={handleClose} id="AddBook">
           <Modal.Header closeButton>
             <Modal.Title>Add Book</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1"
-                onChange={(e => setTitle(e.target.value))} required>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1" >
                 <Form.Label>Title</Form.Label>
                 <Form.Control
                   type="text"
+                  onChange={(e => setTitle(e.target.value))}
                   autoFocus
+                  required
                 />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput2"
-                onChange={(e => setPages(e.target.value))} required>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                 <Form.Label>Total Pages</Form.Label>
                 <Form.Control
                   type="number"
+                  onChange={(e => setPages(e.target.value))}
                   autoFocus
+                  required
                 />
               </Form.Group>
               <Dropdown key={"dropkey1"}>
-              <Form.Label>Select Authors</Form.Label>
+                <Form.Label>Select Authors</Form.Label>
                 <Select
-          options={optionList}
-          placeholder="Select Author"
-          value={selectedOptions}
-          onChange={handleSelect}
-          isSearchable={true}
-          isMulti
-        />
+                  options={optionList}
+                  placeholder="Select Author"
+                  value={selectedOptions}
+                  onChange={handleSelect}
+                  isSearchable={true}
+                  isMulti
+                />
               </Dropdown>
               <br></br>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput3"
-                onChange={(e => setDate(e.target.value))}>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                 <Form.Label>Published Date</Form.Label>
                 <Form.Control
                   type="date"
+                  onChange={(e => setDate(e.target.value))}
                   autoFocus
                   required
                 />
@@ -268,22 +270,23 @@ export default function Books() {
           </Modal.Header>
           <Modal.Body>
             <Form>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1"
-                onChange={(e => setTitle(e.target.value))} >
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1" >
                 <Form.Label >Title</Form.Label>
                 <Form.Control
-                  value={title}
                   type="text"
+                  value={title}
+                  onChange={(e => setTitle(e.target.value))}
                 />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput2"
-                onChange={(e => setPages(e.target.value))}>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                 <Form.Label>Total Pages</Form.Label>
                 <Form.Control
+                
+                onChange={(e => setPages(e.target.value))}
                   value={pages}
                   type="number"
                 />
-              </Form.Group>              
+              </Form.Group>
               <Dropdown key={"dropkey1"}>
                 <Form.Label>Select Authors</Form.Label>
                 <Select
@@ -296,10 +299,11 @@ export default function Books() {
                 />
               </Dropdown>
               <br></br>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput3"
-                onChange={(e => setDate(e.target.value))}>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                 <Form.Label>Published Date</Form.Label>
                 <Form.Control
+                
+                onChange={(e => setDate(e.target.value))}
                   value={publishedDate.split("T")[0]}
                   type="date"
                   autoFocus

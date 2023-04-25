@@ -14,8 +14,7 @@ export const AuthProvider = ({ children }) => {
       }, [auth]);
 
     return (
-        <AuthContext.Provider value={{ auth, setAuth }}>
-            {console.log("povider auth2: ", auth)}
+        <AuthContext.Provider value={{ auth, setAuth }}>            
             {children}
         </AuthContext.Provider>
     )

@@ -68,7 +68,7 @@ export default function Authors() {
       alert("Author Informations Updated");
       setName("");
       setDate("");
-
+      handleCloseEdit();
       Load();
     } catch (err) {
       alert(err);

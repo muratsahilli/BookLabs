@@ -1,14 +1,18 @@
 import axios from '../../api/axios';
+import useAuth from '../../hooks/useAuth';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Form, Button, Modal, Container } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import Navigation from './Navigation';
 
 export default function Users() {
 
+  const navigate = useNavigate();
+  const { setAuth } = useAuth();
+
   const [userList, setUserList] = useState([])
-  const navName = localStorage.getItem("navName")
-  const userEmail = localStorage.getItem("email")
+  const localname = localStorage.getItem("username");
   const [userId, setUserId] = useState()
   const [userName, setUserName] = useState("")
   const [fullName, setFullName] = useState("")
@@ -17,8 +21,6 @@ export default function Users() {
 
   const handleCloseEdit = () => setShowEdit(false);
   const handleShowEdit = () => setShowEdit(true);
-
-
 
   useEffect(() => {
     (async () => await Load())();
@@ -56,9 +58,14 @@ export default function Users() {
     }
     catch { alert("eror") }
   }
-  async function deleteUser(id) {
+  async function deleteUser(id, name) {
     try {
       await axios.delete("/Users/" + id);
+      if (name === localname) {
+        setAuth({});
+        localStorage.removeItem("auth");
+        navigate("../Register")
+      }
       alert("User deleted");
       Load();
     } catch (error) {
@@ -89,7 +96,7 @@ export default function Users() {
     },
     {
       name: 'Role',
-      selector: (row) => row.roles.map(u=>u.roleName).join(', '),
+      selector: (row) => row.roles.map(u => u.roleName).join(', '),
       sortable: true,
     },
     {
@@ -99,7 +106,7 @@ export default function Users() {
           <button className="btn btn-warning me-1" onClick={() => editUser(row)}>
             Edit
           </button>
-          <button className="btn btn-danger" onClick={() => deleteUser(row.authorId)}>
+          <button className="btn btn-danger" onClick={() => deleteUser(row.userId, row.userName)}>
             Delete
           </button>
         </div>
@@ -110,7 +117,7 @@ export default function Users() {
       cell: (row) => (
         <div>
           {
-            (row.userName !== navName && row.email !== userEmail) &&
+            (row.userName !== localname) &&
             <Button color="info" onClick={() => changeRole(row.userId)}>
               Change Role
             </Button>
@@ -169,32 +176,34 @@ export default function Users() {
           </Modal.Header>
           <Modal.Body>
             <Form>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1"
-                onChange={(e => setUserName(e.target.value))}>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Username</Form.Label>
                 <Form.Control
                   value={userName}
                   type="text"
-                                  autoFocus
-                                  disabled
+                  onChange={(e => setUserName(e.target.value))}
+                  autoFocus
+                  disabled
                   required
                 />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1"
-                onChange={(e => setFullName(e.target.value))}>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Full Name</Form.Label>
                 <Form.Control
                   value={fullName}
+
+                  onChange={(e => setFullName(e.target.value))}
                   type="text"
                   autoFocus
                   required
                 />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1"
-                onChange={(e => setEmail(e.target.value))}>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
                   value={email}
+
+                  onChange={(e => setEmail(e.target.value))}
                   type="email"
                   autoFocus
                   required

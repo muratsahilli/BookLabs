@@ -36,21 +36,19 @@ const Login = () => {
             console.log(JSON.stringify(response?.data));
             const accessToken = response.data.token;
             const roles = response?.data?.roles[0].roleName;
-            setAuth({ user, pwd, roles, accessToken });
-            
-            console.log(setAuth);
+            setAuth({ user, pwd, roles, accessToken });   
+            localStorage.setItem("auth", JSON.stringify({ user, pwd, roles, accessToken }));         
+            localStorage.setItem("username",user);
             setUser('');
             setPwd('');
+            
             localStorage.setItem("navName",response.data.fullName);
-            localStorage.setItem("auth", JSON.stringify({ user, pwd, roles, accessToken }));
+            
             if (roles === "admin") {
                 navigate("/Dashboard")
             } else {
                 navigate("/UserDashboard");
             }
-
-
-
         } catch (error) {
             if (!error?.response) {
                 setErrMsg('No Server Response');

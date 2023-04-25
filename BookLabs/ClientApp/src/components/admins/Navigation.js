@@ -18,7 +18,7 @@ function Navigation() {
   return (
     <Navbar style={{ backgroundColor: 'rgb(119, 160, 169)',minHeight: '100px' }} expand="xl" variant="dark">
       <Container >
-      <Navbar.Brand href="#" style={{ fontWeight: 'bold', fontSize: '2em' }}>
+      <Navbar.Brand  style={{ fontWeight: 'bold', fontSize: '2em' }}>
           WELCOME {name}
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
