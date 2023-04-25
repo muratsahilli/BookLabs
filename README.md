@@ -102,7 +102,7 @@ Bu testler, kitapların listelenmesi, kitap bilgilerinin güncellemesi ve silinm
 ### Yazar Testleri
 Bu testler, yazarların listelenmesi, yazar bilgilerinin güncellemesi ve silinmesi gibi temel işlevlerin doğru bir şekilde çalıştığını doğrulamayı amaçlıyor.
 
-- **GetAuthor_ReturnCorrectAuthor**: Doğru yazarın getirildiği
+- **GetAuthor_ReturnCorrectAuthor**: Doğru yazarın getirildiğini doğruluyor.
 
 - **GetAuthor_WithInvalidId_ReturnsNull**: Mevcut olmayan bir yazar için getirme işlevi çağrıldığında bir hata kodu döndürdüğünü doğruluyor.
 
