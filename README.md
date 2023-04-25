@@ -25,10 +25,10 @@ Bu proje, kitapların ve yazarların stok takibini kolaylaştırmak için bir we
 - Microsoft .NET Test SDK  *17.1.0*
 - Entity Framework Core InMemory  *7.0.5*
 
-### Veritabanı
+### Veri tabanı
 - PostgreSQL *14*
 
-## Veritabanı Tasarımı
+## Veri tabanı Tasarımı
 
 - Book (kitap) tablosu: BookId (int), Title (string), TotalPages (id), PublishedDate (DateTime)
 - Author (yazar) tablosu: AuthorId (int), AuthorName (string), BirthDate (DateTime)
