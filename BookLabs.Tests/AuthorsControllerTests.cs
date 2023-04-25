@@ -134,7 +134,7 @@ namespace BookLabs.Tests
 
         }
         [Fact]
-        public async Task PostAuthor_WithNullAuthorsSet_ReturnsBadRequest()
+        public async Task ShouldReturnBadRequest_WhenAuthorIsNull()
         {
             // Arrange
 
